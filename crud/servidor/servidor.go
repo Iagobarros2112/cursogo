@@ -14,6 +14,7 @@ type usuario struct {
 	Email string `json:"email"`
 }
 
+// criar um usuario existente no banco de dados
 func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 	corpoRequisicao, erro := io.ReadAll(r.Body)
 	if erro != nil {
@@ -60,3 +61,6 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(fmt.Sprintf("usuario inserido com sucesso!!! Id %d", idInserido)))
 
 }
+
+// achar todo usuarios no database
+func BuscarUsuarios()
