@@ -23,15 +23,18 @@
     <h2>
         pagina principal
     </h2>
+    
+    <button id="botao">Me Clica!!!</button>
 
-    <marquee>
-        <h4>
-            seja bem vindo, {{.Nome }} !!!
-        </h4>
-    </marquee>
+    <script>
+        var botao = document.getElementById("botao");
+        botao.onclick = function() {
+            alert ("botao acionado Bomba armada")
+        }
 
-    <h4>
-        seja bem vindo !!
-    </h4>
+    </script>
+   
+
+   
 </body>
 </html>
