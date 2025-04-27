@@ -67,14 +67,16 @@ func BuscarUsuarios(w http.ResponseWriter, r *http.Request) {
 	db, erro := banco.Conectar()
 	if erro != nil {
 		w.Write([]byte("erro ao conectar com o database!!!!"))
+		return
 
 	}
 
 	defer db.Close()
 
 	linhas, erro := db.Query("select * from usuarios")
-	if erro != nul {
+	if erro != nil {
 		w.Write([]byte("erro ao buscar os usuarios"))
+		return
 	}
 
 	defer linhas.Close()
@@ -83,13 +85,24 @@ func BuscarUsuarios(w http.ResponseWriter, r *http.Request) {
 	//  reorganizar os dados novamente para que seja
 	//  readble para outro usuario no outro endpoint
 
-	var usuarios [] usuario
+	var usuarios []usuario
 	for linhas.Next() {
-		var usuario usuario 
+		var usuario usuario
 
-		if erro := linhas.Scan(&usuario.ID, &usuario.Nome, &usuario.Email)
+		if erro := linhas.Scan(&usuario.ID, &usuario.Nome, &usuario.Email); erro != nil {
+			w.Write([]byte("erro ao escanear os usuarios"))
+			return
+		}
+
+		usuarios = append(usuarios, usuario)
 	}
 
+	w.WriteHeader(http.StatusOK)
+	if erro := json.NewEncoder(w).Encode(usuarios); erro != nil {
+		w.Write([]byte("erro ao converter usuario para json"))
+		return
+
+	}
 
 }
 
